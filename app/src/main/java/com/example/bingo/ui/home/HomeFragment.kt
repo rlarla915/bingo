@@ -49,17 +49,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val dataSet : ArrayList<List<String>> = arrayListOf()
-        Log.e("X", "AAAA")
         mainActivity.db.collection("bingo")
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    Log.e("X", "BBBB")
-                    Log.e("test", document.get("title").toString())
-                    dataSet.add(listOf(document.get("title").toString(), document.get("writer").toString(), document.get("date").toString()))
+                    dataSet.add(listOf(document.get("title").toString(), document.get("writer").toString(), document.get("date").toString(), document.id))
                 }
                 binding.bingoList.layoutManager = LinearLayoutManager(mainActivity)
-                binding.bingoList.adapter = BingoListAdapter(dataSet)
+                binding.bingoList.adapter = BingoListAdapter(mainActivity, dataSet)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents.", exception)
