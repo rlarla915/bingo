@@ -10,15 +10,22 @@ import com.example.bingo.MainActivity
 import com.example.bingo.R
 import com.example.bingo.databinding.*
 
-class PlayBingoListAdapter(val mainActivity: MainActivity, val dataSet: ArrayList<String>) :
+public interface BingoClickListener{
+    fun onBingoClick(pos : Int, clicked : Boolean)
+}
+
+class PlayBingoListAdapter(val mainActivity: MainActivity, val fragment: BingoFragment, val dataSet: ArrayList<String>) :
     RecyclerView.Adapter<PlayBingoListAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(val mainActivity: MainActivity, val binding: ListItemPlayBingoBinding) : RecyclerView.ViewHolder(binding.root) {
+
+
+    class ViewHolder(val mainActivity: MainActivity, val fragment: BingoFragment, val binding: ListItemPlayBingoBinding) : RecyclerView.ViewHolder(binding.root) {
         var clicked : Boolean = false
+        var bingoClickListener : BingoClickListener = fragment
         fun bind(data:String, position: Int){
             binding.playBingoListItemText.text = data
             binding.playBingoListItemText.setOnClickListener {
@@ -29,7 +36,7 @@ class PlayBingoListAdapter(val mainActivity: MainActivity, val dataSet: ArrayLis
                     binding.playBingoListItemText.setBackgroundResource(R.drawable.radius_border_filled)
                 }
                 clicked = !clicked
-                mainActivity.playBingoItem(position, clicked)
+                bingoClickListener.onBingoClick(position, clicked)
             }
         }
     }
@@ -39,7 +46,7 @@ class PlayBingoListAdapter(val mainActivity: MainActivity, val dataSet: ArrayLis
         // Create a new view, which defines the UI of the list item
         val binding = ListItemPlayBingoBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
 
-        return ViewHolder(mainActivity, binding)
+        return ViewHolder(mainActivity, fragment, binding)
     }
 
     // Replace the contents of a view (invoked by the layout manager)

@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     // firestore 연동
     val db = Firebase.firestore
     var createBingoItemArr : MutableList<String> = MutableList<String>(25){""}
-    var playBingoItemArr : MutableList<Boolean> = MutableList<Boolean>(25){false}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +39,6 @@ class MainActivity : AppCompatActivity() {
 
     fun saveBingoItem(index : Int, content : String){
         createBingoItemArr[index] = content
-    }
-    fun playBingoItem(index : Int, clicked : Boolean){
-        playBingoItemArr[index] = clicked
     }
 
     fun setAppbarTitle(title: String?){

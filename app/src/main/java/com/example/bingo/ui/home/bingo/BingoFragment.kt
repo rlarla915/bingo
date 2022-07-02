@@ -14,9 +14,11 @@ import com.example.bingo.MainActivity
 import com.example.bingo.databinding.FragmentBingoBinding
 import com.example.bingo.databinding.FragmentHomeBinding
 
-class BingoFragment : Fragment() {
+class BingoFragment : Fragment(), BingoClickListener{
 
     private var _binding: FragmentBingoBinding? = null
+    var playBingoItemArr : MutableList<Boolean> = MutableList<Boolean>(25){false}
+    var numBingo : Int = 0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,7 +48,7 @@ class BingoFragment : Fragment() {
             .addOnSuccessListener { document ->
                 val dataSet : ArrayList<String> = document.get("array") as ArrayList<String>
                 binding.playBingoList.layoutManager = GridLayoutManager(mainActivity, 5)
-                binding.playBingoList.adapter = PlayBingoListAdapter(mainActivity, dataSet)
+                binding.playBingoList.adapter = PlayBingoListAdapter(mainActivity, this, dataSet)
             }
             .addOnFailureListener {
 
@@ -56,5 +58,28 @@ class BingoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onBingoClick(pos: Int, clicked: Boolean) {
+        playBingoItemArr[pos] = clicked
+        checkBingo()
+    }
+    private fun checkBingo(){
+        numBingo = 0
+        for (i in 0..4){
+            if (playBingoItemArr[i] && playBingoItemArr[5+i] && playBingoItemArr[10+i] && playBingoItemArr[15+i] && playBingoItemArr[20+i]){
+                numBingo++
+            }
+            if (playBingoItemArr[5*i] && playBingoItemArr[5*i+1] && playBingoItemArr[5*i+2] && playBingoItemArr[5*i+3] && playBingoItemArr[5*i+4]){
+                numBingo++
+            }
+        }
+        if (playBingoItemArr[0] && playBingoItemArr[6] && playBingoItemArr[12] && playBingoItemArr[18] && playBingoItemArr[24]){
+            numBingo++
+        }
+        if (playBingoItemArr[4] && playBingoItemArr[8] && playBingoItemArr[12] && playBingoItemArr[16] && playBingoItemArr[20]){
+            numBingo++
+        }
+        binding.textNumBingo.text = "빙고 개수 : "+numBingo.toString()
     }
 }

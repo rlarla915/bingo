@@ -35,5 +35,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/play_bingo_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/text_num_bingo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="6dp"
+        android:text="빙고 개수 : 0" />
 </LinearLayout>
